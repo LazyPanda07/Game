@@ -24,7 +24,7 @@ namespace fields
 
 	void BaseField::findPath(vector<pair<size_t, size_t>>& possiblePath, size_t pathSize)
 	{
-		if (possiblePath.empty() || (possiblePath.size() - 1 == pathSize))
+		if (possiblePath.empty())
 		{
 			return;
 		}
@@ -32,6 +32,11 @@ namespace fields
 		auto recursiveFindPath = [this, &possiblePath, &pathSize](size_t x, size_t y)
 		{
 			pair<size_t, size_t> position = { x, y };
+
+			if (possiblePath.size() - 1 == pathSize)
+			{
+				return;
+			}
 
 			if (this->checkPosition(x, y) && find(possiblePath.begin(), possiblePath.end(), position) == possiblePath.end())
 			{
