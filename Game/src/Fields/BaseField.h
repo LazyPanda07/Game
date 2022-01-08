@@ -16,11 +16,15 @@ namespace fields
 
 	private:
 		bool checkPosition(size_t x, size_t y) const;
+		
+		void findPath(std::vector<std::pair<size_t, size_t>>& possiblePath, size_t pathSize);
 
 	public:
 		BaseField(size_t width, size_t height);
 
 		virtual void generate() final;
+
+		std::vector<std::pair<size_t, size_t>> calculatePossiblePath(size_t currentX, size_t currentY);
 
 		std::pair<size_t, size_t> setPlayerPosition();
 

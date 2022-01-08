@@ -22,6 +22,42 @@ namespace fields
 		return false;
 	}
 
+	void BaseField::findPath(vector<pair<size_t, size_t>>& possiblePath, size_t pathSize)
+	{
+		if (possiblePath.empty() || (possiblePath.size() - 1 == pathSize))
+		{
+			return;
+		}
+
+		auto recursiveFindPath = [this, &possiblePath, &pathSize](size_t x, size_t y)
+		{
+			pair<size_t, size_t> position = { x, y };
+
+			if (this->checkPosition(x, y) && find(possiblePath.begin(), possiblePath.end(), position) == possiblePath.end())
+			{
+				possiblePath.push_back(move(position));
+
+				this->findPath(possiblePath, pathSize);
+			}
+		};
+
+		const auto& [playerX, playerY] = possiblePath.back();
+
+		recursiveFindPath(playerX + 1, playerY);
+
+		recursiveFindPath(playerX, playerY + 1);
+
+		if (playerX)
+		{
+			recursiveFindPath(playerX - 1, playerY);
+		}
+
+		if (playerY)
+		{
+			recursiveFindPath(playerX, playerY - 1);
+		}
+	}
+
 	BaseField::BaseField(size_t width, size_t height) :
 		width(width),
 		height(height)
@@ -32,6 +68,17 @@ namespace fields
 	void BaseField::generate()
 	{
 		field = const_cast<const BaseField*>(this)->generateField();
+	}
+
+	vector<pair<size_t, size_t>> BaseField::calculatePossiblePath(size_t currentX, size_t currentY)
+	{
+		vector<pair<size_t, size_t>> result = { make_pair(currentX, currentY) };
+
+		this->findPath(result, this->getAllPositionCount() / 2);
+
+		result.erase(result.begin());
+
+		return result;
 	}
 
 	pair<size_t, size_t> BaseField::setPlayerPosition()
@@ -104,7 +151,7 @@ namespace fields
 		{
 			result = { playerX - 1, playerY };
 		}
-		else if (playerY && this->checkPosition(playerX, playerY))
+		else if (playerY && this->checkPosition(playerX, playerY - 1))
 		{
 			result = { playerX, playerY - 1 };
 		}
@@ -145,7 +192,7 @@ namespace fields
 		{
 			result += i.size();
 		}
-		
+
 		return result;
 	}
 }

@@ -16,6 +16,8 @@ namespace player
 		currentY = startPosition.second;
 
 		path.push_back(move(startPosition));
+
+		field[currentY][currentX] = true;
 	}
 
 	Player::Player(const Player& other) :
