@@ -19,6 +19,11 @@ namespace game_mode
 	{
 		const player::Player* winPlayer = nullptr;
 
+		for (auto& player : players)
+		{
+			player.calculatePossiblePath();
+		}
+
 		while (true)
 		{
 			if (field.isFieldFull())

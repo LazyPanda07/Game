@@ -24,7 +24,7 @@ namespace fields
 
 		virtual void generate() final;
 
-		std::vector<std::pair<size_t, size_t>> calculatePossiblePath(size_t currentX, size_t currentY);
+		std::vector<std::pair<size_t, size_t>> calculatePossiblePath(size_t currentX, size_t currentY, size_t pathSize);
 
 		std::pair<size_t, size_t> setPlayerPosition();
 

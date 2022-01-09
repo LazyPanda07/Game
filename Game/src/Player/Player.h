@@ -10,6 +10,7 @@ namespace player
 	{
 	private:
 		std::vector<std::pair<size_t, size_t>> path;
+		std::vector<std::pair<size_t, size_t>> possiblePath;
 		std::string name;
 		fields::BaseField& field;
 		size_t currentX;
@@ -23,6 +24,8 @@ namespace player
 		Player(const Player& other);
 
 		Player& operator = (const Player& other);
+
+		void calculatePossiblePath();
 
 		void makeTurn();
 

@@ -45,24 +45,58 @@ namespace player
 		return *this;
 	}
 
+	void Player::calculatePossiblePath()
+	{
+		size_t pathSize = field.getAllPositionCount() / 2 - path.size();
+
+		possiblePath = field.calculatePossiblePath(currentX, currentY, pathSize + 1);
+	}
+
 	void Player::makeTurn()
 	{
-		pair<size_t, size_t> nextPositon = field.getAvailableNextTurnPosition(currentX, currentY, isSkipPreviousTurn);
+		auto moveToNext = [this](pair<size_t, size_t>&& nextPosition)
+		{
+			currentX = nextPosition.first;
+			currentY = nextPosition.second;
 
-		if (nextPositon == make_pair(currentX, currentY))
+			path.push_back(move(nextPosition));
+
+			field[currentY][currentX] = true;
+		};
+
+		if (isSkipPreviousTurn)
+		{
+			pair<size_t, size_t> nextPositon = field.getAvailableNextTurnPosition(currentX, currentY, isSkipPreviousTurn);
+
+			isSkipPreviousTurn = false;
+
+			moveToNext(move(nextPositon));
+
+			this->calculatePossiblePath();
+
+			return;
+		}
+
+		if (possiblePath.empty())
 		{
 			isSkipPreviousTurn = true;
+
+			return;
+		}
+
+		pair<size_t, size_t>& nextPosition = possiblePath.front();
+
+		if (field[nextPosition.second][nextPosition.first])
+		{
+			this->calculatePossiblePath();
+
+			this->makeTurn();
 		}
 		else
 		{
-			isSkipPreviousTurn = false;
+			moveToNext(move(nextPosition));
 
-			currentX = nextPositon.first;
-			currentY = nextPositon.second;
-
-			path.push_back(move(nextPositon));
-
-			field[currentY][currentX] = true;
+			possiblePath.erase(possiblePath.begin());
 		}
 	}
 

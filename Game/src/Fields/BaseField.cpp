@@ -32,13 +32,20 @@ namespace fields
 		auto recursiveFindPath = [this, &possiblePath, &pathSize](size_t x, size_t y)
 		{
 			pair<size_t, size_t> position = { x, y };
+			auto checkDifference = [&possiblePath, &position]()
+			{
+				int64_t checkX = abs(static_cast<int64_t>(possiblePath.back().first) - static_cast<int64_t>(position.first));
+				int64_t checkY = abs(static_cast<int64_t>(possiblePath.back().second) - static_cast<int64_t>(position.second));
+
+				return checkX + checkY < 2;
+			};
 
 			if (possiblePath.size() - 1 == pathSize)
 			{
 				return;
 			}
 
-			if (this->checkPosition(x, y) && find(possiblePath.begin(), possiblePath.end(), position) == possiblePath.end())
+			if (this->checkPosition(x, y) && find(possiblePath.begin(), possiblePath.end(), position) == possiblePath.end() && checkDifference())
 			{
 				possiblePath.push_back(move(position));
 
@@ -75,11 +82,11 @@ namespace fields
 		field = const_cast<const BaseField*>(this)->generateField();
 	}
 
-	vector<pair<size_t, size_t>> BaseField::calculatePossiblePath(size_t currentX, size_t currentY)
+	vector<pair<size_t, size_t>> BaseField::calculatePossiblePath(size_t currentX, size_t currentY, size_t pathSize)
 	{
 		vector<pair<size_t, size_t>> result = { make_pair(currentX, currentY) };
 
-		this->findPath(result, this->getAllPositionCount() / 2);
+		this->findPath(result, pathSize);
 
 		result.erase(result.begin());
 
