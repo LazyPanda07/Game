@@ -22,14 +22,14 @@ namespace fields
 		return false;
 	}
 
-	void BaseField::findPath(vector<pair<size_t, size_t>>& possiblePath, size_t pathSize)
+	void BaseField::findPath(vector<pair<size_t, size_t>>& possiblePath, multimap<size_t, vector<pair<size_t, size_t>>>& paths, size_t pathSize)
 	{
 		if (possiblePath.empty())
 		{
 			return;
 		}
 
-		auto recursiveFindPath = [this, &possiblePath, &pathSize](size_t x, size_t y)
+		auto recursiveFindPath = [this, &possiblePath, &paths, &pathSize](size_t x, size_t y)
 		{
 			pair<size_t, size_t> position = { x, y };
 			auto checkDifference = [&possiblePath, &position]()
@@ -49,7 +49,11 @@ namespace fields
 			{
 				possiblePath.push_back(move(position));
 
-				this->findPath(possiblePath, pathSize);
+				paths.insert(make_pair(possiblePath.size(), possiblePath));
+
+				vector<pair<size_t, size_t>> nextPath = possiblePath;
+
+				this->findPath(nextPath, paths, pathSize);
 			}
 		};
 
@@ -84,9 +88,17 @@ namespace fields
 
 	vector<pair<size_t, size_t>> BaseField::calculatePossiblePath(size_t currentX, size_t currentY, size_t pathSize)
 	{
-		vector<pair<size_t, size_t>> result = { make_pair(currentX, currentY) };
+		vector<pair<size_t, size_t>> tem = { make_pair(currentX, currentY) };
+		multimap<size_t, vector<pair<size_t, size_t>>> paths;
 
-		this->findPath(result, pathSize);
+		this->findPath(tem, paths, pathSize);
+
+		if (paths.empty())
+		{
+			return {};
+		}
+
+		vector<pair<size_t, size_t>> result = paths.rbegin()->second;
 
 		result.erase(result.begin());
 
@@ -95,16 +107,19 @@ namespace fields
 
 	pair<size_t, size_t> BaseField::setPlayerPosition()
 	{
-		mt19937 random(static_cast<uint32_t>(time(nullptr)));
+		static mt19937_64 random(static_cast<uint32_t>(time(nullptr)));
 
-		size_t x = random() % width;
-		size_t y = random() % height;
-
-		if (this->checkPosition(x, y))
+		for (size_t i = 0; i < 5; i++)
 		{
-			field[y][x] = false;
+			size_t x = random() % width;
+			size_t y = random() % height;
 
-			return { x, y };
+			if (this->checkPosition(x, y))
+			{
+				field[y][x] = true;
+
+				return { x, y };
+			}
 		}
 
 		for (size_t y = 0; y < field.size(); y++)
@@ -113,7 +128,7 @@ namespace fields
 			{
 				if (this->checkPosition(x, y))
 				{
-					field[y][x] = false;
+					field[y][x] = true;
 
 					return { x, y };
 				}
@@ -123,12 +138,12 @@ namespace fields
 		return { 0, 0 };
 	}
 
-	pair<size_t, size_t> BaseField::getAvailableNextTurnPosition(size_t playerX, size_t playerY, bool isSkipPreviousTurn) const
+	pair<size_t, size_t> BaseField::getNextTurnAfterSkip(size_t playerX, size_t playerY) const
 	{
-		if (isSkipPreviousTurn)
-		{
-			mt19937 random(static_cast<uint32_t>(time(nullptr)));
+		static mt19937_64 random(static_cast<uint32_t>(time(nullptr)));
 
+		for (size_t i = 0; i < 5; i++)
+		{
 			size_t x = random() % width;
 			size_t y = random() % height;
 
@@ -136,39 +151,20 @@ namespace fields
 			{
 				return { x, y };
 			}
+		}
 
-			for (size_t column = 0; column < field.size(); column++)
+		for (size_t column = 0; column < field.size(); column++)
+		{
+			for (size_t row = 0; row < field[column].size(); row++)
 			{
-				for (size_t row = 0; row < field[column].size(); row++)
+				if (!field[column][row])
 				{
-					if (field[column][row])
-					{
-						return { row, column };
-					}
+					return { row, column };
 				}
 			}
 		}
 
-		pair<size_t, size_t > result = { playerX, playerY };
-
-		if (this->checkPosition(playerX + 1, playerY))
-		{
-			result = { playerX + 1, playerY };
-		}
-		else if (this->checkPosition(playerX, playerY + 1))
-		{
-			result = { playerX, playerY + 1 };
-		}
-		else if (playerX && this->checkPosition(playerX - 1, playerY))
-		{
-			result = { playerX - 1, playerY };
-		}
-		else if (playerY && this->checkPosition(playerX, playerY - 1))
-		{
-			result = { playerX, playerY - 1 };
-		}
-
-		return result;
+		return { 0, 0 };
 	}
 
 	bool BaseField::isFieldFull() const

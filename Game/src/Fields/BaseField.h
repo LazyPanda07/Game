@@ -1,6 +1,7 @@
 #pragma once
 
 #include <vector>
+#include <map>
 
 namespace fields
 {
@@ -17,7 +18,7 @@ namespace fields
 	private:
 		bool checkPosition(size_t x, size_t y) const;
 		
-		void findPath(std::vector<std::pair<size_t, size_t>>& possiblePath, size_t pathSize);
+		void findPath(std::vector<std::pair<size_t, size_t>>& possiblePath, std::multimap<size_t, std::vector<std::pair<size_t, size_t>>>& paths, size_t pathSize);
 
 	public:
 		BaseField(size_t width, size_t height);
@@ -28,7 +29,7 @@ namespace fields
 
 		std::pair<size_t, size_t> setPlayerPosition();
 
-		std::pair<size_t, size_t> getAvailableNextTurnPosition(size_t playerX, size_t playerY, bool isSkipPreviousTurn) const;
+		std::pair<size_t, size_t> getNextTurnAfterSkip(size_t playerX, size_t playerY) const;
 
 		bool isFieldFull() const;
 

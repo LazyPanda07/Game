@@ -66,7 +66,7 @@ namespace player
 
 		if (isSkipPreviousTurn)
 		{
-			pair<size_t, size_t> nextPositon = field.getAvailableNextTurnPosition(currentX, currentY, isSkipPreviousTurn);
+			pair<size_t, size_t> nextPositon = field.getNextTurnAfterSkip(currentX, currentY);
 
 			isSkipPreviousTurn = false;
 
