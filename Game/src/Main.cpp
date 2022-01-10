@@ -5,6 +5,7 @@
 #include "Fields/SquareField.h"
 #include "Fields/CircleField.h"
 #include "Fields/QuadrantField.h"
+#include "Fields/RectangleField.h"
 #include "GameMode/GameMode.h"
 
 using namespace std;
@@ -16,7 +17,7 @@ int main(int argc, char** argv)
 {
 	SetConsoleOutputCP(1251);
 
-	startGame<fields::QuadrantField>(5);
+	startGame<fields::RectangleField>(10, 5);
 
 	return 0;
 }
