@@ -7,7 +7,7 @@ namespace fields
 	class RectangleField : public BaseField
 	{
 	protected:
-		virtual std::vector<std::vector<bool>> generateField() const override;
+		virtual std::vector<std::vector<fieldPointState>> generateField() const override;
 
 	public:
 		RectangleField(size_t width, size_t height);

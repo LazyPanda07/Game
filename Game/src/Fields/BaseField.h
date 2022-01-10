@@ -5,15 +5,22 @@
 
 namespace fields
 {
+	enum class fieldPointState : uint8_t
+	{
+		empty,
+		filled,
+		unaccessed
+	};
+
 	class BaseField
 	{
 	protected:
-		std::vector<std::vector<bool>> field;
+		std::vector<std::vector<fieldPointState>> field;
 		size_t width;
 		size_t height;
 
 	protected:
-		virtual std::vector<std::vector<bool>> generateField() const = 0;
+		virtual std::vector<std::vector<fieldPointState>> generateField() const = 0;
 
 	private:
 		bool checkPosition(size_t x, size_t y) const;
@@ -33,9 +40,9 @@ namespace fields
 
 		bool isFieldFull() const;
 
-		std::vector<bool>& operator [] (size_t index);
+		std::vector<fieldPointState>& operator [] (size_t index);
 
-		const std::vector<bool>& operator [] (size_t index) const;
+		const std::vector<fieldPointState>& operator [] (size_t index) const;
 
 		size_t getWidth() const;
 

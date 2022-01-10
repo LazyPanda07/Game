@@ -7,13 +7,16 @@
 
 using namespace std;
 
+static mt19937_64 random(static_cast<uint32_t>(time(nullptr)));
+static constexpr size_t triesToFindEmptyPosition = 100;
+
 namespace fields
 {
 	bool BaseField::checkPosition(size_t x, size_t y) const
 	{
 		if (y < field.size())
 		{
-			if (x < field[y].size() && !field[y][x])
+			if (x < field[y].size() && field[y][x] == fieldPointState::empty)
 			{
 				return true;
 			}
@@ -107,16 +110,14 @@ namespace fields
 
 	pair<size_t, size_t> BaseField::setPlayerPosition()
 	{
-		static mt19937_64 random(static_cast<uint32_t>(time(nullptr)));
-
-		for (size_t i = 0; i < 5; i++)
+		for (size_t i = 0; i < triesToFindEmptyPosition; i++)
 		{
 			size_t x = random() % width;
 			size_t y = random() % height;
 
 			if (this->checkPosition(x, y))
 			{
-				field[y][x] = true;
+				field[y][x] = fieldPointState::filled;
 
 				return { x, y };
 			}
@@ -128,7 +129,7 @@ namespace fields
 			{
 				if (this->checkPosition(x, y))
 				{
-					field[y][x] = true;
+					field[y][x] = fieldPointState::filled;
 
 					return { x, y };
 				}
@@ -140,9 +141,7 @@ namespace fields
 
 	pair<size_t, size_t> BaseField::getNextTurnAfterSkip(size_t playerX, size_t playerY) const
 	{
-		static mt19937_64 random(static_cast<uint32_t>(time(nullptr)));
-
-		for (size_t i = 0; i < 5; i++)
+		for (size_t i = 0; i < triesToFindEmptyPosition; i++)
 		{
 			size_t x = random() % width;
 			size_t y = random() % height;
@@ -157,7 +156,7 @@ namespace fields
 		{
 			for (size_t row = 0; row < field[column].size(); row++)
 			{
-				if (!field[column][row])
+				if (field[column][row] == fieldPointState::empty)
 				{
 					return { row, column };
 				}
@@ -169,15 +168,15 @@ namespace fields
 
 	bool BaseField::isFieldFull() const
 	{
-		return all_of(field.begin(), field.end(), [](const vector<bool>& row) { return all_of(row.begin(), row.end(), [](bool position) { return position; }); });
+		return all_of(field.begin(), field.end(), [](const vector<fieldPointState>& row) { return all_of(row.begin(), row.end(), [](fieldPointState position) { return position == fieldPointState::filled || position == fieldPointState::unaccessed; }); });
 	}
 
-	vector<bool>& BaseField::operator[](size_t index)
+	vector<fieldPointState>& BaseField::operator[](size_t index)
 	{
 		return field[index];
 	}
 
-	const vector<bool>& BaseField::operator [] (size_t index) const
+	const vector<fieldPointState>& BaseField::operator [] (size_t index) const
 	{
 		return field[index];
 	}
@@ -198,7 +197,7 @@ namespace fields
 
 		for (const auto& i : field)
 		{
-			result += i.size();
+			result += count_if(i.begin(), i.end(), [](fieldPointState state) { return state == fieldPointState::empty || state == fieldPointState::filled; });
 		}
 
 		return result;

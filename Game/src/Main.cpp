@@ -17,8 +17,6 @@ int main(int argc, char** argv)
 
 	SetConsoleOutputCP(1251);
 
-	cout << "Левый верхний угол имеет координаты (0, 0)" << endl << endl;
-
 	game.playGame();
 
 	return 0;

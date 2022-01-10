@@ -4,9 +4,9 @@ using namespace std;
 
 namespace fields
 {
-	vector<vector<bool>> RectangleField::generateField() const
+	vector<vector<fieldPointState>> RectangleField::generateField() const
 	{
-		return vector<vector<bool>>(height, vector<bool>(width, false));
+		return vector<vector<fieldPointState>>(height, vector<fieldPointState>(width, fieldPointState::empty));
 	}
 
 	RectangleField::RectangleField(size_t width, size_t height) :

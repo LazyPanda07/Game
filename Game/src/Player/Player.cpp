@@ -17,7 +17,7 @@ namespace player
 
 		path.push_back(move(startPosition));
 
-		field[currentY][currentX] = true;
+		field[currentY][currentX] = fields::fieldPointState::filled;
 	}
 
 	Player::Player(const Player& other) :
@@ -61,7 +61,7 @@ namespace player
 
 			path.push_back(move(nextPosition));
 
-			field[currentY][currentX] = true;
+			field[currentY][currentX] = fields::fieldPointState::filled;
 		};
 
 		if (isSkipPreviousTurn)
@@ -86,7 +86,7 @@ namespace player
 
 		pair<size_t, size_t>& nextPosition = possiblePath.front();
 
-		if (field[nextPosition.second][nextPosition.first])
+		if (field[nextPosition.second][nextPosition.first] == fields::fieldPointState::filled)
 		{
 			this->calculatePossiblePath();
 
