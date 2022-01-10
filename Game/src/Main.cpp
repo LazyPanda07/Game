@@ -12,6 +12,7 @@
 #include "settings.h"
 
 #include "JSONParser.h"
+#include "JSONArrayWrapper.h"
 
 #pragma comment (lib, "JSON.lib")
 
@@ -35,13 +36,15 @@ int main(int argc, char** argv)
 		isInitialized = false;
 	}
 
-	SetConsoleOutputCP(1251);
+	SetConsoleOutputCP(CP_UTF8);
 
 	try
 	{
 		if (!initialization())
 		{
-			startGame<fields::RectangleField>(10, 5);
+			cout << json::utility::toUTF8JSON("Запускается квадратное поле 4x4 с 2 игроками", 1251) << endl;
+
+			startGame<fields::SquareField>(4);
 		}
 	}
 	catch (const exception& e)
@@ -55,12 +58,23 @@ int main(int argc, char** argv)
 template<typename FieldT, typename... Args>
 void startGame(const Args&... args)
 {
+	using json::utility::toUTF8JSON;
+
 	unique_ptr<FieldT> field = make_unique<FieldT>(args...);
-	vector<string> players = { "Синий", "Оранжевый" };
+	unique_ptr<vector<string>> players = nullptr;
+
+	if (isInitialized)
+	{
+		players = make_unique<vector<string>>(json::utility::JSONArrayWrapper(settings.getArray("players")).getAsStringArray());
+	}
+	else
+	{
+		players = make_unique<vector<string>>(vector<string>{ toUTF8JSON("Синий", 1251), toUTF8JSON("Оранжевый", 1251) });
+	}
 
 	field->generate();
 
-	unique_ptr<game_mode::GameMode> game = make_unique<game_mode::GameMode>(*(field.get()), players);
+	unique_ptr<game_mode::GameMode> game = make_unique<game_mode::GameMode>(*(field.get()), *players);
 
 	while (!game->playGame() && isInitialized && settings.getBool("repeatAfterDraw"))
 	{
@@ -68,7 +82,7 @@ void startGame(const Args&... args)
 
 		field->generate();
 
-		game = make_unique<game_mode::GameMode>(*(field.get()), players);
+		game = make_unique<game_mode::GameMode>(*(field.get()), *players);
 	}
 }
 

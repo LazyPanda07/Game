@@ -67,6 +67,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="settings.json" />
+    <None Include="settingsq.json" />
   </ItemGroup>
 </Project>

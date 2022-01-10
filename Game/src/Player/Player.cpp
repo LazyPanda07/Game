@@ -1,5 +1,7 @@
 #include "Player.h"
 
+#include "JSONUtility.h"
+
 using namespace std;
 
 namespace player
@@ -102,7 +104,7 @@ namespace player
 
 	void Player::printPath(ostream& stream) const
 	{
-		stream << "Путь игрока " << name << ':' << endl;
+		stream << json::utility::toUTF8JSON("Путь игрока ", 1251) << name << ':' << endl;
 
 		for (const auto& [x, y] : path)
 		{

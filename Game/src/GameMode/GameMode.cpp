@@ -21,6 +21,8 @@ namespace game_mode
 
 	bool GameMode::playGame()
 	{
+		using json::utility::toUTF8JSON;
+
 		const player::Player* winPlayer = nullptr;
 		unique_ptr<ofstream> outFile;
 		ostream& outputStream = [&outFile]() -> ostream&
@@ -65,7 +67,7 @@ namespace game_mode
 					return false;
 				}
 
-				outputStream << "Ни один игрок не смог выиграть так как все поле заполнено" << endl;
+				outputStream << toUTF8JSON("Ни один игрок не смог выиграть так как все поле заполнено", 1251) << endl;
 
 				return false;
 			}
@@ -88,7 +90,7 @@ namespace game_mode
 			}
 		}
 
-		outputStream << "Игрок " << winPlayer->getName() << " выиграл." << endl;
+		outputStream << toUTF8JSON("Игрок ", 1251) << winPlayer->getName() << toUTF8JSON(" выиграл.", 1251) << endl;
 
 		winPlayer->printPath(outputStream);
 

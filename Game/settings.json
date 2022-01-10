@@ -5,5 +5,9 @@
     "height": 4
   },
   "out": "standard",
-  "repeatAfterDraw": true
+  "repeatAfterDraw": true,
+  "players": [
+    "Синий",
+    "Оранжевый"
+  ]
 }
