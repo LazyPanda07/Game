@@ -30,7 +30,7 @@
     <ClCompile Include="src\Fields\CircleField.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Fields\SemiCircleField.cpp">
+    <ClCompile Include="src\Fields\QuadrantField.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Player\Player.cpp">
@@ -53,7 +53,7 @@
     <ClInclude Include="src\Fields\CircleField.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Fields\SemiCircleField.h">
+    <ClInclude Include="src\Fields\QuadrantField.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Player\Player.h">

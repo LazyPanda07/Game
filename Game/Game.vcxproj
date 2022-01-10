@@ -89,7 +89,7 @@
     <ClCompile Include="src\Fields\BaseField.cpp" />
     <ClCompile Include="src\Fields\CircleField.cpp" />
     <ClCompile Include="src\Fields\RectangleField.cpp" />
-    <ClCompile Include="src\Fields\SemiCircleField.cpp" />
+    <ClCompile Include="src\Fields\QuadrantField.cpp" />
     <ClCompile Include="src\Fields\SquareField.cpp" />
     <ClCompile Include="src\GameMode\GameMode.cpp" />
     <ClCompile Include="src\Main.cpp" />
@@ -99,7 +99,7 @@
     <ClInclude Include="src\Fields\BaseField.h" />
     <ClInclude Include="src\Fields\CircleField.h" />
     <ClInclude Include="src\Fields\RectangleField.h" />
-    <ClInclude Include="src\Fields\SemiCircleField.h" />
+    <ClInclude Include="src\Fields\QuadrantField.h" />
     <ClInclude Include="src\Fields\SquareField.h" />
     <ClInclude Include="src\GameMode\GameMode.h" />
     <ClInclude Include="src\Player\Player.h" />
