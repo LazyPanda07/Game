@@ -6,7 +6,7 @@ namespace fields
 {
 	class CircleField : public BaseField
 	{
-	private:
+	protected:
 		size_t radius;
 
 	protected:
