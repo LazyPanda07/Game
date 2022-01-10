@@ -13,7 +13,7 @@ namespace game_mode
 	public:
 		GameMode(fields::BaseField& field, const std::vector<std::string>& playersNames);
 
-		void playGame();
+		bool playGame();
 
 		~GameMode() = default;
 	};

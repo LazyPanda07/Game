@@ -1,6 +1,10 @@
 #include "GameMode.h"
 
+#include <iostream>
+#include <fstream>
 #include <algorithm>
+
+#include "settings.h"
 
 using namespace std;
 
@@ -15,9 +19,37 @@ namespace game_mode
 		}
 	}
 
-	void GameMode::playGame()
+	bool GameMode::playGame()
 	{
 		const player::Player* winPlayer = nullptr;
+		unique_ptr<ofstream> outFile;
+		ostream& outputStream = [&outFile]() -> ostream&
+		{
+			if (isInitialized)
+			{
+				try
+				{
+					const string& outName = settings.getString("out");
+
+					if (outName == "standard")
+					{
+						return cout;
+					}
+
+					outFile = make_unique<ofstream>(outName, ios::app);
+
+					return *outFile;
+				}
+				catch (const json::exceptions::BaseJSONException&)
+				{
+					return cout;
+				}
+			}
+			else
+			{
+				return cout;
+			}
+		}();
 
 		for (auto& player : players)
 		{
@@ -28,9 +60,14 @@ namespace game_mode
 		{
 			if (field.isFieldFull())
 			{
-				cout << "Ни один игрок не смог выиграть так как все поле заполнено" << endl;
+				if (isInitialized && settings.getBool("repeatAfterDraw"))
+				{
+					return false;
+				}
 
-				return;
+				outputStream << "Ни один игрок не смог выиграть так как все поле заполнено" << endl;
+
+				return false;
 			}
 
 			for (auto& player : players)
@@ -51,12 +88,14 @@ namespace game_mode
 			}
 		}
 
-		cout << "Игрок " << winPlayer->getName() << " выиграл." << endl;
+		outputStream << "Игрок " << winPlayer->getName() << " выиграл." << endl;
 
-		winPlayer->printPath(cout);
+		winPlayer->printPath(outputStream);
 
 		players.erase(find(players.begin(), players.end(), *winPlayer));
 
-		for_each(players.begin(), players.end(), [](const player::Player& player) { player.printPath(cout); });
+		for_each(players.begin(), players.end(), [&outputStream](const player::Player& player) { player.printPath(outputStream); });
+
+		return true;
 	}
 }

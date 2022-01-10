@@ -62,5 +62,11 @@
     <ClInclude Include="src\GameMode\GameMode.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\settings.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="settings.json" />
   </ItemGroup>
 </Project>
