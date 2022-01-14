@@ -52,6 +52,9 @@ int main(int argc, char** argv)
 		cout << e.what() << endl;
 	}
 
+#ifndef _DEBUG
+	system("pause");
+#endif // !_DEBUG
 	return 0;
 }
 
