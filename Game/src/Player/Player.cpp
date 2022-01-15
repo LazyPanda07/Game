@@ -13,14 +13,14 @@ namespace player
 		field(field),
 		isSkipPreviousTurn(false),
 		allFieldPositionCount(field.getAllPositionCount()),
-		turns(0)
+		turns(1)
 	{
 		currentX = startPosition.first;
 		currentY = startPosition.second;
 
 		path.push_back(startPosition);
 
-		field.fillPosition(currentX, currentY, turns++, color);
+		field.fillPosition(currentX, currentY, -2, color);
 	}
 
 	Player::Player(const Player& other) :

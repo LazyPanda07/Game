@@ -230,6 +230,11 @@ namespace fields
 
 					break;
 
+				case -2:
+					stream << '*';
+
+					break;
+
 				default:
 					if (isFileStream)
 					{
