@@ -31,7 +31,7 @@ namespace fields
 		BaseField(radius * 2 + 1, radius * 2 + 1),
 		radius(radius)
 	{
-
+		
 	}
 
 	size_t CircleField::getRadius() const

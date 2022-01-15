@@ -6,8 +6,9 @@ using namespace std;
 
 namespace player
 {
-	Player::Player(const string& playerName, fields::BaseField& field) :
+	Player::Player(const string& playerName, const vector<int64_t>& color, fields::BaseField& field) :
 		name(playerName),
+		color(color),
 		field(field),
 		isSkipPreviousTurn(false),
 		allFieldPositionCount(field.getAllPositionCount())
@@ -19,12 +20,13 @@ namespace player
 
 		path.push_back(move(startPosition));
 
-		field[currentY][currentX] = fields::fieldPointState::filled;
+		field.fillPosition(currentX, currentY, color);
 	}
 
 	Player::Player(const Player& other) :
 		path(other.path),
 		name(other.name),
+		color(other.color),
 		field(other.field),
 		currentX(other.currentX),
 		currentY(other.currentY),
@@ -38,6 +40,7 @@ namespace player
 	{
 		path = other.path;
 		name = other.name;
+		color = other.color;
 		field = other.field;
 		currentX = other.currentX;
 		currentY = other.currentY;
@@ -63,7 +66,7 @@ namespace player
 
 			path.push_back(move(nextPosition));
 
-			field[currentY][currentX] = fields::fieldPointState::filled;
+			field.fillPosition(currentX, currentY, color);
 		};
 
 		if (isSkipPreviousTurn)
@@ -137,5 +140,10 @@ namespace player
 	size_t Player::getCurrentY() const
 	{
 		return currentY;
+	}
+
+	const vector<int64_t>& Player::getColor() const
+	{
+		return color;
 	}
 }

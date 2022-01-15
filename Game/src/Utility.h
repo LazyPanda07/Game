@@ -1,0 +1,12 @@
+#pragma once
+
+#include <cstdint>
+#include <ostream>
+#include <vector>
+#include <format>
+
+template<typename T>
+void print(const T& symbol, std::ostream& stream, const std::vector<int64_t>& color)
+{
+	stream << std::format("\033[38;2;{};{};{}m{}\033[0m", color[0], color[1], color[2], symbol);
+}

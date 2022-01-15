@@ -5,17 +5,18 @@
 #include <algorithm>
 
 #include "settings.h"
+#include "JSONArrayWrapper.h"
 
 using namespace std;
 
 namespace game_mode
 {
-	GameMode::GameMode(fields::BaseField& field, const vector<string>& playersNames) :
+	GameMode::GameMode(fields::BaseField& field, const vector<json::utility::objectSmartPointer<json::utility::jsonObject>>& players) :
 		field(field)
 	{
-		for (const auto& name : playersNames)
+		for (const auto& data : players)
 		{
-			players.emplace_back(name, field);
+			this->players.emplace_back(data->getString("name"), json::utility::JSONArrayWrapper(data->getArray("color")).getAsInt64_tArray(), field);
 		}
 	}
 
@@ -90,13 +91,15 @@ namespace game_mode
 			}
 		}
 
-		outputStream << toUTF8JSON("Игрок ", 1251) << winPlayer->getName() << toUTF8JSON(" выиграл.", 1251) << endl;
+		outputStream << field << endl;
 
-		winPlayer->printPath(outputStream);
-
-		players.erase(find(players.begin(), players.end(), *winPlayer));
-
-		for_each(players.begin(), players.end(), [&outputStream](const player::Player& player) { player.printPath(outputStream); });
+		// outputStream << toUTF8JSON("Игрок ", 1251) << winPlayer->getName() << toUTF8JSON(" выиграл.", 1251) << endl;
+		// 
+		// winPlayer->printPath(outputStream);
+		// 
+		// players.erase(find(players.begin(), players.end(), *winPlayer));
+		// 
+		// for_each(players.begin(), players.end(), [&outputStream](const player::Player& player) { player.printPath(outputStream); });
 
 		return true;
 	}

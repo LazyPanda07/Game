@@ -12,6 +12,7 @@ namespace player
 		std::vector<std::pair<size_t, size_t>> path;
 		std::vector<std::pair<size_t, size_t>> possiblePath;
 		std::string name;
+		std::vector<int64_t> color;
 		fields::BaseField& field;
 		size_t currentX;
 		size_t currentY;
@@ -19,7 +20,7 @@ namespace player
 		size_t allFieldPositionCount;
 
 	public:
-		Player(const std::string& playerName, fields::BaseField& field);
+		Player(const std::string& playerName, const std::vector<int64_t>& color, fields::BaseField& field);
 
 		Player(const Player& other);
 
@@ -40,6 +41,8 @@ namespace player
 		size_t getCurrentX() const;
 
 		size_t getCurrentY() const;
+
+		const std::vector<int64_t>& getColor() const;
 
 		~Player() = default;
 	};

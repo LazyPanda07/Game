@@ -5,6 +5,8 @@
 #include <algorithm>
 #include <numeric>
 
+#include "Utility.h"
+
 using namespace std;
 
 static mt19937_64 random(static_cast<uint32_t>(time(nullptr)));
@@ -108,6 +110,18 @@ namespace fields
 		return result;
 	}
 
+	void BaseField::fillPosition(size_t x, size_t y, const vector<int64_t>& color)
+	{
+		field[y][x] = fieldPointState::filled;
+
+		colors[&field[y][x]] = color;
+	}
+
+	bool BaseField::isFieldFull() const
+	{
+		return all_of(field.begin(), field.end(), [](const vector<fieldPointState>& row) { return all_of(row.begin(), row.end(), [](fieldPointState position) { return position == fieldPointState::filled || position == fieldPointState::unaccessed; }); });
+	}
+
 	pair<size_t, size_t> BaseField::setPlayerPosition()
 	{
 		for (size_t i = 0; i < triesToFindEmptyPosition; i++)
@@ -166,21 +180,6 @@ namespace fields
 		return { 0, 0 };
 	}
 
-	bool BaseField::isFieldFull() const
-	{
-		return all_of(field.begin(), field.end(), [](const vector<fieldPointState>& row) { return all_of(row.begin(), row.end(), [](fieldPointState position) { return position == fieldPointState::filled || position == fieldPointState::unaccessed; }); });
-	}
-
-	vector<fieldPointState>& BaseField::operator[](size_t index)
-	{
-		return field[index];
-	}
-
-	const vector<fieldPointState>& BaseField::operator [] (size_t index) const
-	{
-		return field[index];
-	}
-
 	size_t BaseField::getWidth() const
 	{
 		return width;
@@ -201,5 +200,43 @@ namespace fields
 		}
 
 		return result;
+	}
+
+	const vector<fieldPointState>& BaseField::operator [] (size_t index) const
+	{
+		return field[index];
+	}
+
+	ostream& operator << (ostream& stream, const BaseField& field)
+	{
+		for (size_t y = 0; y < field.field.size(); y++)
+		{
+			for (size_t x = 0; x < field.field[y].size(); x++)
+			{
+				switch (field[y][x])
+				{
+				case fieldPointState::empty:
+					stream << '0';
+
+					break;
+
+				case fieldPointState::filled:
+					print('1', stream, field.colors.at(&field[y][x]));
+
+					break;
+
+				case fieldPointState::unaccessed:
+					stream << '#';
+
+					break;
+				}
+
+				stream << ' ';
+			}
+
+			stream << endl;
+		}
+
+		return stream;
 	}
 }

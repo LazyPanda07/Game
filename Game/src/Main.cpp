@@ -64,20 +64,39 @@ void startGame(const Args&... args)
 	using json::utility::toUTF8JSON;
 
 	unique_ptr<FieldT> field = make_unique<FieldT>(args...);
-	unique_ptr<vector<string>> players = nullptr;
+	vector<json::utility::objectSmartPointer<json::utility::jsonObject>> players;
 
 	if (isInitialized)
 	{
-		players = make_unique<vector<string>>(json::utility::JSONArrayWrapper(settings.getArray("players")).getAsStringArray());
+		players = json::utility::JSONArrayWrapper(settings.getArray("players")).getAsObjectArray();
 	}
 	else
 	{
-		players = make_unique<vector<string>>(vector<string>{ toUTF8JSON("Синий", 1251), toUTF8JSON("Оранжевый", 1251) });
+		json::utility::objectSmartPointer<json::utility::jsonObject> blue = json::utility::make_object<json::utility::jsonObject>();
+		json::utility::objectSmartPointer<json::utility::jsonObject> orange = json::utility::make_object<json::utility::jsonObject>();
+		vector<json::utility::objectSmartPointer<json::utility::jsonObject>> color;
+
+		json::utility::appendArray(0, color);
+		json::utility::appendArray(0, color);
+		json::utility::appendArray(255, color);
+
+		blue->data.push_back({ "name"s, toUTF8JSON("Синий", 1251) });
+		blue->data.push_back({ "color"s, move(color) });
+
+		json::utility::appendArray(255, color);
+		json::utility::appendArray(165, color);
+		json::utility::appendArray(0, color);
+
+		orange->data.push_back({ "name"s, toUTF8JSON("Оранжевый", 1251) });
+		orange->data.push_back({ "color"s, move(color) });
+
+		json::utility::appendArray(move(blue), players);
+		json::utility::appendArray(move(orange), players);
 	}
 
 	field->generate();
 
-	unique_ptr<game_mode::GameMode> game = make_unique<game_mode::GameMode>(*(field.get()), *players);
+	unique_ptr<game_mode::GameMode> game = make_unique<game_mode::GameMode>(*(field.get()), players);
 
 	while (!game->playGame() && isInitialized && settings.getBool("repeatAfterDraw"))
 	{
@@ -85,7 +104,7 @@ void startGame(const Args&... args)
 
 		field->generate();
 
-		game = make_unique<game_mode::GameMode>(*(field.get()), *players);
+		game = make_unique<game_mode::GameMode>(*(field.get()), players);
 	}
 }
 

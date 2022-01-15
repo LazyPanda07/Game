@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Player/Player.h"
+#include "JSONUtility.h"
 
 namespace game_mode
 {
@@ -11,7 +12,7 @@ namespace game_mode
 		fields::BaseField& field;
 
 	public:
-		GameMode(fields::BaseField& field, const std::vector<std::string>& playersNames);
+		GameMode(fields::BaseField& field, const std::vector<json::utility::objectSmartPointer<json::utility::jsonObject>>& players);
 
 		bool playGame();
 

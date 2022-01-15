@@ -2,6 +2,8 @@
 
 #include <vector>
 #include <map>
+#include <unordered_map>
+#include <ostream>
 
 namespace fields
 {
@@ -16,6 +18,7 @@ namespace fields
 	{
 	protected:
 		std::vector<std::vector<fieldPointState>> field;
+		std::unordered_map<const fieldPointState*, std::vector<int64_t>> colors;
 		size_t width;
 		size_t height;
 
@@ -34,21 +37,23 @@ namespace fields
 
 		std::vector<std::pair<size_t, size_t>> calculatePossiblePath(size_t currentX, size_t currentY, size_t pathSize);
 
-		std::pair<size_t, size_t> setPlayerPosition();
-
-		std::pair<size_t, size_t> getNextTurnAfterSkip(size_t playerX, size_t playerY) const;
+		void fillPosition(size_t x, size_t y, const std::vector<int64_t>& color);
 
 		bool isFieldFull() const;
 
-		std::vector<fieldPointState>& operator [] (size_t index);
+		std::pair<size_t, size_t> setPlayerPosition();
 
-		const std::vector<fieldPointState>& operator [] (size_t index) const;
+		std::pair<size_t, size_t> getNextTurnAfterSkip(size_t playerX, size_t playerY) const;
 
 		size_t getWidth() const;
 
 		size_t getHeight() const;
 
 		size_t getAllPositionCount() const;
+
+		const std::vector<fieldPointState>& operator [] (size_t index) const;
+
+		friend std::ostream& operator << (std::ostream& stream, const BaseField& field);
 
 		virtual ~BaseField() = default;
 	};

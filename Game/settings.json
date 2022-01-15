@@ -1,13 +1,18 @@
 {
   "field": {
-    "type": "rectangle",
-    "width": 4,
-    "height": 4
+    "type": "square",
+    "size": "5"
   },
   "out": "standard",
   "repeatAfterDraw": true,
   "players": [
-    "Синий",
-    "Оранжевый"
+    {
+      "name": "Синий",
+      "color": [ 0, 0, 255 ]
+    },
+    {
+      "name": "Оранжевый",
+      "color": [ 255, 165, 0 ]
+    }
   ]
 }
