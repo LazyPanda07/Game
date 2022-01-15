@@ -21,8 +21,6 @@ namespace player
 
 		path.push_back(startPosition);
 
-		field.fillPosition(currentX, currentY, -2, color);
-
 		allFieldPositionCount = field.getAllPositionCount();
 	}
 

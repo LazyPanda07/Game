@@ -132,7 +132,7 @@ namespace fields
 
 			if (this->checkPosition(x, y))
 			{
-				field[y][x] = 1;
+				field[y][x] = -2;
 
 				return { x, y };
 			}
@@ -144,7 +144,7 @@ namespace fields
 			{
 				if (this->checkPosition(x, y))
 				{
-					field[y][x] = 1;
+					field[y][x] = -2;
 
 					return { x, y };
 				}
