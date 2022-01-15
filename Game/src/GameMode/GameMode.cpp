@@ -81,13 +81,13 @@ namespace game_mode
 
 		outputStream << field << endl;
 
-		// outputStream << toUTF8JSON("Игрок ", 1251) << winPlayer->getName() << toUTF8JSON(" выиграл.", 1251) << endl;
-		// 
-		// winPlayer->printPath(outputStream);
-		// 
-		// players.erase(find(players.begin(), players.end(), *winPlayer));
-		// 
-		// for_each(players.begin(), players.end(), [&outputStream](const player::Player& player) { player.printPath(outputStream); });
+		outputStream << toUTF8JSON("Игрок ", 1251) << winPlayer->getName() << toUTF8JSON(" выиграл.", 1251) << endl;
+		
+		winPlayer->printPath(outputStream);
+		
+		players.erase(find(players.begin(), players.end(), *winPlayer));
+		
+		for_each(players.begin(), players.end(), [&outputStream](const player::Player& player) { player.printPath(outputStream); });
 
 		return true;
 	}

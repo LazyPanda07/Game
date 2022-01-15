@@ -1,5 +1,7 @@
 #include "Player.h"
 
+#include <format>
+
 #include "JSONUtility.h"
 #include "settings.h"
 
@@ -12,7 +14,6 @@ namespace player
 		color(color),
 		field(field),
 		isSkipPreviousTurn(false),
-		allFieldPositionCount(field.getAllPositionCount()),
 		turns(1)
 	{
 		currentX = startPosition.first;
@@ -21,6 +22,8 @@ namespace player
 		path.push_back(startPosition);
 
 		field.fillPosition(currentX, currentY, -2, color);
+
+		allFieldPositionCount = field.getAllPositionCount();
 	}
 
 	Player::Player(const Player& other) :
@@ -54,7 +57,7 @@ namespace player
 
 	void Player::calculatePossiblePath()
 	{
-		size_t pathSize = field.getAllPositionCount() / 2 - path.size();
+		size_t pathSize = allFieldPositionCount / 2 - path.size();
 
 		possiblePath = field.calculatePossiblePath(currentX, currentY, pathSize + 1);
 	}
@@ -113,7 +116,7 @@ namespace player
 
 		for (const auto& [x, y] : path)
 		{
-			stream << '(' << x << ", " << y << ')' << endl;
+			stream << format("({}, {})", x, y) << endl;
 		}
 
 		stream << endl;

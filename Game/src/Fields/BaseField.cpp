@@ -197,7 +197,7 @@ namespace fields
 
 		for (const auto& i : field)
 		{
-			result += count_if(i.begin(), i.end(), [](int state) { return state >= 0; });
+			result += ranges::count_if(i, [](int available) { return available >= 0 || available == -2; });
 		}
 
 		return result;
