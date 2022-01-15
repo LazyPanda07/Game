@@ -13,13 +13,15 @@ using namespace std;
 static mt19937_64 random(static_cast<uint32_t>(time(nullptr)));
 static constexpr size_t triesToFindEmptyPosition = 100;
 
+static size_t getDigits(int value);
+
 namespace fields
 {
 	bool BaseField::checkPosition(size_t x, size_t y) const
 	{
 		if (y < field.size())
 		{
-			if (x < field[y].size() && field[y][x] == fieldPointState::empty)
+			if (x < field[y].size() && field[y][x] == 0)
 			{
 				return true;
 			}
@@ -82,7 +84,8 @@ namespace fields
 
 	BaseField::BaseField(size_t width, size_t height) :
 		width(width),
-		height(height)
+		height(height),
+		maxTurnDigits(0)
 	{
 
 	}
@@ -111,16 +114,13 @@ namespace fields
 		return result;
 	}
 
-	void BaseField::fillPosition(size_t x, size_t y, const vector<int64_t>& color)
+	void BaseField::fillPosition(size_t x, size_t y, size_t turnNumber, const vector<int64_t>& color)
 	{
-		field[y][x] = fieldPointState::filled;
+		field[y][x] = static_cast<int>(turnNumber);
+
+		maxTurnDigits = max(maxTurnDigits, getDigits(static_cast<int>(turnNumber)));
 
 		colors[&field[y][x]] = color;
-	}
-
-	bool BaseField::isFieldFull() const
-	{
-		return all_of(field.begin(), field.end(), [](const vector<fieldPointState>& row) { return all_of(row.begin(), row.end(), [](fieldPointState position) { return position == fieldPointState::filled || position == fieldPointState::unaccessed; }); });
 	}
 
 	pair<size_t, size_t> BaseField::setPlayerPosition()
@@ -132,7 +132,7 @@ namespace fields
 
 			if (this->checkPosition(x, y))
 			{
-				field[y][x] = fieldPointState::filled;
+				field[y][x] = 1;
 
 				return { x, y };
 			}
@@ -144,7 +144,7 @@ namespace fields
 			{
 				if (this->checkPosition(x, y))
 				{
-					field[y][x] = fieldPointState::filled;
+					field[y][x] = 1;
 
 					return { x, y };
 				}
@@ -171,7 +171,7 @@ namespace fields
 		{
 			for (size_t row = 0; row < field[column].size(); row++)
 			{
-				if (field[column][row] == fieldPointState::empty)
+				if (field[column][row] == 0)
 				{
 					return { row, column };
 				}
@@ -197,13 +197,13 @@ namespace fields
 
 		for (const auto& i : field)
 		{
-			result += count_if(i.begin(), i.end(), [](fieldPointState state) { return state == fieldPointState::empty || state == fieldPointState::filled; });
+			result += count_if(i.begin(), i.end(), [](int state) { return state >= 0; });
 		}
 
 		return result;
 	}
 
-	const vector<fieldPointState>& BaseField::operator [] (size_t index) const
+	const vector<int>& BaseField::operator [] (size_t index) const
 	{
 		return field[index];
 	}
@@ -216,32 +216,34 @@ namespace fields
 		{
 			for (size_t x = 0; x < field.field[y].size(); x++)
 			{
+				size_t spacesCount = field.maxTurnDigits - getDigits(field[y][x]) + 1;
+
 				switch (field[y][x])
 				{
-				case fieldPointState::empty:
-					stream << '0';
+				case 0:
+					stream << 0;
 
 					break;
 
-				case fieldPointState::filled:
+				case -1:
+					stream << '#';
+
+					break;
+
+				default:
 					if (isFileStream)
 					{
-						stream << '1';
+						stream << field[y][x];
 					}
 					else
 					{
-						print('1', stream, field.colors.at(&field[y][x]));
+						print(field[y][x], stream, field.colors.at(&field[y][x]));
 					}
-					
-					break;
-
-				case fieldPointState::unaccessed:
-					stream << '#';
 
 					break;
 				}
 
-				stream << ' ';
+				stream << string(spacesCount, ' ');
 			}
 
 			stream << endl;
@@ -249,4 +251,18 @@ namespace fields
 
 		return stream;
 	}
+}
+
+size_t getDigits(int value)
+{
+	size_t digits = 0;
+
+	do
+	{
+		value /= 10;
+
+		digits++;
+	} while (value);
+
+	return digits;
 }

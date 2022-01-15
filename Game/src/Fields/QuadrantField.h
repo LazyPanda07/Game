@@ -7,7 +7,7 @@ namespace fields
 	class QuadrantField : public CircleField
 	{
 	protected:
-		virtual std::vector<std::vector<fieldPointState>> generateField() const override;
+		virtual std::vector<std::vector<int>> generateField() const override;
 
 	public:
 		QuadrantField(size_t circleRadius);

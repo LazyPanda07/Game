@@ -61,18 +61,6 @@ namespace game_mode
 
 		while (true)
 		{
-			if (field.isFieldFull())
-			{
-				if (isInitialized && settings.getBool("repeatAfterDraw"))
-				{
-					return false;
-				}
-
-				outputStream << toUTF8JSON("Ни один игрок не смог выиграть так как все поле заполнено", 1251) << endl;
-
-				return false;
-			}
-
 			for (auto& player : players)
 			{
 				player.makeTurn();

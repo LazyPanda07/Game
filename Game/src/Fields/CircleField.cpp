@@ -6,9 +6,9 @@ using namespace std;
 
 namespace fields
 {
-	vector<vector<fieldPointState>> CircleField::generateField() const
+	vector<vector<int>> CircleField::generateField() const
 	{
-		vector<vector<fieldPointState>> circle(height, vector<fieldPointState>(width, fieldPointState::unaccessed));
+		vector<vector<int>> circle(height, vector<int>(width, -1));
 		int64_t centerX = radius;
 		int64_t centerY = radius;
 		int64_t squareRadius = static_cast<int64_t>(pow(radius, 2));
@@ -19,7 +19,7 @@ namespace fields
 			{
 				if ((pow(x - centerX, 2) + pow(y - centerY, 2)) <= squareRadius)
 				{
-					circle[y][x] = fieldPointState::empty;
+					circle[y][x] = 0;
 				}
 			}
 		}

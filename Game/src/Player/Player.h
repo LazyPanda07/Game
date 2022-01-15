@@ -18,6 +18,7 @@ namespace player
 		size_t currentY;
 		bool isSkipPreviousTurn;
 		size_t allFieldPositionCount;
+		size_t turns;
 
 	public:
 		Player(const std::string& playerName, const std::vector<int64_t>& color, fields::BaseField& field);

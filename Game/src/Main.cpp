@@ -63,7 +63,7 @@ void startGame(const Args&... args)
 {
 	using json::utility::toUTF8JSON;
 
-	unique_ptr<FieldT> field = make_unique<FieldT>(args...);
+	FieldT field(args...);
 	vector<json::utility::objectSmartPointer<json::utility::jsonObject>> players;
 
 	if (isInitialized)
@@ -94,18 +94,13 @@ void startGame(const Args&... args)
 		json::utility::appendArray(move(orange), players);
 	}
 
-	field->generate();
+	field.generate();
 
-	unique_ptr<game_mode::GameMode> game = make_unique<game_mode::GameMode>(*(field.get()), players);
+	startPosition = field.setPlayerPosition();
 
-	while (!game->playGame() && isInitialized && settings.getBool("repeatAfterDraw"))
-	{
-		field = make_unique<FieldT>(args...);
+	game_mode::GameMode game(field, players);
 
-		field->generate();
-
-		game = make_unique<game_mode::GameMode>(*(field.get()), players);
-	}
+	game.playGame();
 }
 
 bool initialization()
@@ -135,7 +130,7 @@ bool initialization()
 		}
 		else
 		{
-			throw runtime_error("Неверный тип поля");
+			throw runtime_error(json::utility::toUTF8JSON("Неверный тип поля", 1251));
 		}
 	}
 

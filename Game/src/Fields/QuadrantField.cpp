@@ -6,15 +6,15 @@ using namespace std;
 
 namespace fields
 {
-	vector<vector<fieldPointState>> QuadrantField::generateField() const
+	vector<vector<int>> QuadrantField::generateField() const
 	{
-		vector<vector<fieldPointState>> circle = CircleField::generateField();
+		vector<vector<int>> circle = CircleField::generateField();
 		QuadrantField& self = const_cast<QuadrantField&>(*this);
 		
 		self.width = radius + 1;
 		self.height = radius + 1;
 		
-		vector<vector<fieldPointState>> quadrant(height, vector<fieldPointState>(width, fieldPointState::empty));
+		vector<vector<int>> quadrant(height, vector<int>(width, 0));
 
 		for (size_t y = 0; y <= radius; y++)
 		{

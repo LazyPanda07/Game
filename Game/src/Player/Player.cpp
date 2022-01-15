@@ -1,6 +1,7 @@
 #include "Player.h"
 
 #include "JSONUtility.h"
+#include "settings.h"
 
 using namespace std;
 
@@ -11,16 +12,15 @@ namespace player
 		color(color),
 		field(field),
 		isSkipPreviousTurn(false),
-		allFieldPositionCount(field.getAllPositionCount())
+		allFieldPositionCount(field.getAllPositionCount()),
+		turns(0)
 	{
-		pair<size_t, size_t> startPosition = field.setPlayerPosition();
-
 		currentX = startPosition.first;
 		currentY = startPosition.second;
 
-		path.push_back(move(startPosition));
+		path.push_back(startPosition);
 
-		field.fillPosition(currentX, currentY, color);
+		field.fillPosition(currentX, currentY, turns++, color);
 	}
 
 	Player::Player(const Player& other) :
@@ -31,7 +31,8 @@ namespace player
 		currentX(other.currentX),
 		currentY(other.currentY),
 		isSkipPreviousTurn(other.isSkipPreviousTurn),
-		allFieldPositionCount(other.allFieldPositionCount)
+		allFieldPositionCount(other.allFieldPositionCount),
+		turns(other.turns)
 	{
 
 	}
@@ -46,6 +47,7 @@ namespace player
 		currentY = other.currentY;
 		isSkipPreviousTurn = other.isSkipPreviousTurn;
 		allFieldPositionCount = other.allFieldPositionCount;
+		turns = other.turns;
 
 		return *this;
 	}
@@ -66,7 +68,7 @@ namespace player
 
 			path.push_back(move(nextPosition));
 
-			field.fillPosition(currentX, currentY, color);
+			field.fillPosition(currentX, currentY, turns++, color);
 		};
 
 		if (isSkipPreviousTurn)
@@ -91,7 +93,7 @@ namespace player
 
 		pair<size_t, size_t>& nextPosition = possiblePath.front();
 
-		if (field[nextPosition.second][nextPosition.first] == fields::fieldPointState::filled)
+		if (field[nextPosition.second][nextPosition.first] > 0)
 		{
 			this->calculatePossiblePath();
 

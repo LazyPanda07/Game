@@ -10,7 +10,7 @@ namespace fields
 		size_t radius;
 
 	protected:
-		virtual std::vector<std::vector<fieldPointState>> generateField() const override;
+		virtual std::vector<std::vector<int>> generateField() const override;
 
 	public:
 		CircleField(size_t radius);
