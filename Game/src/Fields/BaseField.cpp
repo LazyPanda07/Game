@@ -4,6 +4,7 @@
 #include <ctime>
 #include <algorithm>
 #include <numeric>
+#include <fstream>
 
 #include "Utility.h"
 
@@ -209,6 +210,8 @@ namespace fields
 
 	ostream& operator << (ostream& stream, const BaseField& field)
 	{
+		bool isFileStream = static_cast<bool>(dynamic_cast<ofstream*>(&stream));
+
 		for (size_t y = 0; y < field.field.size(); y++)
 		{
 			for (size_t x = 0; x < field.field[y].size(); x++)
@@ -221,8 +224,15 @@ namespace fields
 					break;
 
 				case fieldPointState::filled:
-					print('1', stream, field.colors.at(&field[y][x]));
-
+					if (isFileStream)
+					{
+						stream << '1';
+					}
+					else
+					{
+						print('1', stream, field.colors.at(&field[y][x]));
+					}
+					
 					break;
 
 				case fieldPointState::unaccessed:
