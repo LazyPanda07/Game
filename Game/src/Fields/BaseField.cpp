@@ -5,6 +5,8 @@
 #include <algorithm>
 #include <numeric>
 #include <fstream>
+#include <stack>
+#include <array>
 
 #include "Utility.h"
 
@@ -30,55 +32,51 @@ namespace fields
 		return false;
 	}
 
-	void BaseField::findPath(vector<pair<size_t, size_t>>& possiblePath, multimap<size_t, vector<pair<size_t, size_t>>>& paths, size_t pathSize)
+	void BaseField::findPath(const pair<size_t, size_t>& startPosition, map<size_t, vector<pair<size_t, size_t>>>& paths, size_t pathSize)
 	{
-		if (possiblePath.empty())
+		stack<vector<pair<size_t, size_t>>> availablePaths;
+		auto appendPath = [this, &availablePaths, &paths](const vector<pair<size_t, size_t>>& currentPath, size_t x, size_t y)
 		{
-			return;
-		}
+			pair<size_t, size_t> position = make_pair(x, y);
 
-		auto recursiveFindPath = [this, &possiblePath, &paths, &pathSize](size_t x, size_t y)
-		{
-			pair<size_t, size_t> position = { x, y };
-			auto checkDifference = [&possiblePath, &position]()
+			if (this->checkPosition(position.first, position.second) && ranges::find(currentPath, position) == currentPath.end())
 			{
-				int64_t checkX = abs(static_cast<int64_t>(possiblePath.back().first) - static_cast<int64_t>(position.first));
-				int64_t checkY = abs(static_cast<int64_t>(possiblePath.back().second) - static_cast<int64_t>(position.second));
+				vector<pair<size_t, size_t>> nextPath = currentPath;
 
-				return checkX + checkY < 2;
-			};
+				nextPath.push_back(move(position));
 
-			if (possiblePath.size() - 1 == pathSize)
+				paths.insert(make_pair(nextPath.size(), nextPath));
+
+				availablePaths.push(move(nextPath));
+			}
+		};
+
+		availablePaths.push({ startPosition });
+
+		while (availablePaths.size())
+		{
+			vector<pair<size_t, size_t>> currentPath = move(availablePaths.top());
+			const auto& [x, y] = currentPath.back();
+
+			availablePaths.pop();
+
+			if (currentPath.size() - 1 == pathSize)
 			{
 				return;
 			}
 
-			if (this->checkPosition(x, y) && find(possiblePath.begin(), possiblePath.end(), position) == possiblePath.end() && checkDifference())
+			appendPath(currentPath, x + 1, y);
+			appendPath(currentPath, x, y + 1);
+
+			if (x)
 			{
-				possiblePath.push_back(move(position));
-
-				paths.insert(make_pair(possiblePath.size(), possiblePath));
-
-				vector<pair<size_t, size_t>> nextPath = possiblePath;
-
-				this->findPath(nextPath, paths, pathSize);
+				appendPath(currentPath, x - 1, y);
 			}
-		};
 
-		const auto& [playerX, playerY] = possiblePath.back();
-
-		recursiveFindPath(playerX + 1, playerY);
-
-		recursiveFindPath(playerX, playerY + 1);
-
-		if (playerX)
-		{
-			recursiveFindPath(playerX - 1, playerY);
-		}
-
-		if (playerY)
-		{
-			recursiveFindPath(playerX, playerY - 1);
+			if (y)
+			{
+				appendPath(currentPath, x, y - 1);
+			}
 		}
 	}
 
@@ -97,17 +95,16 @@ namespace fields
 
 	vector<pair<size_t, size_t>> BaseField::calculatePossiblePath(size_t currentX, size_t currentY, size_t pathSize)
 	{
-		vector<pair<size_t, size_t>> tem = { make_pair(currentX, currentY) };
-		multimap<size_t, vector<pair<size_t, size_t>>> paths;
+		map<size_t, vector<pair<size_t, size_t>>> paths;
 
-		this->findPath(tem, paths, pathSize);
+		this->findPath(make_pair(currentX, currentY), paths, pathSize);
 
 		if (paths.empty())
 		{
 			return {};
 		}
 
-		vector<pair<size_t, size_t>> result = paths.rbegin()->second;
+		vector<pair<size_t, size_t>> result = move(paths.rbegin()->second);
 
 		result.erase(result.begin());
 

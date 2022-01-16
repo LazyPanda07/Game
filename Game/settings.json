@@ -1,7 +1,7 @@
 {
   "field": {
-    "type": "square",
-    "size": 10
+    "type": "quadrant",
+    "radius": 25
   },
   "out": "standard",
   "players": [

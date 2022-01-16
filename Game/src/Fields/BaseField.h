@@ -22,7 +22,7 @@ namespace fields
 	private:
 		bool checkPosition(size_t x, size_t y) const;
 		
-		void findPath(std::vector<std::pair<size_t, size_t>>& possiblePath, std::multimap<size_t, std::vector<std::pair<size_t, size_t>>>& paths, size_t pathSize);
+		void findPath(const std::pair<size_t, size_t>& startPosition, std::map<size_t, std::vector<std::pair<size_t, size_t>>>& paths, size_t pathSize);
 
 	public:
 		BaseField(size_t width, size_t height);
