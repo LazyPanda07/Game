@@ -36,3 +36,8 @@
 
 # Binaries
 bin/
+
+# Third party
+!JSON.lib
+!JSON.pdb
+!JSON.idb
