@@ -38,6 +38,12 @@
 bin/
 
 # Third party
+# JSON
 !JSON.lib
 !JSON.pdb
 !JSON.idb
+
+# ansicon
+!ANSI32.dll
+!ANSI64.dll
+!ansicon.exe
