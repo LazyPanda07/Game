@@ -11,12 +11,12 @@ using namespace std;
 
 namespace game_mode
 {
-	GameMode::GameMode(fields::BaseField& field, const vector<json::utility::objectSmartPointer<json::utility::jsonObject>>& players) :
+	GameMode::GameMode(fields::BaseField& field, const vector<json::utility::jsonObject>& players) :
 		field(field)
 	{
 		for (const auto& data : players)
 		{
-			this->players.emplace_back(data->getString("name"), json::utility::JSONArrayWrapper(data->getArray("color")).getAsInt64_tArray(), field);
+			this->players.emplace_back(data.getString("name"), json::utility::JSONArrayWrapper(data.getArray("color")).getAsInt64_tArray(), field);
 		}
 	}
 

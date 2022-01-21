@@ -12,7 +12,7 @@ namespace game_mode
 		fields::BaseField& field;
 
 	public:
-		GameMode(fields::BaseField& field, const std::vector<json::utility::objectSmartPointer<json::utility::jsonObject>>& players);
+		GameMode(fields::BaseField& field, const std::vector<json::utility::jsonObject>& players);
 
 		bool playGame();
 

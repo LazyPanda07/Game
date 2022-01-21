@@ -71,7 +71,7 @@ void startGame(const Args&... args)
 	using json::utility::toUTF8JSON;
 
 	FieldT field(args...);
-	vector<json::utility::objectSmartPointer<json::utility::jsonObject>> players;
+	vector<json::utility::jsonObject> players;
 
 	if (isInitialized)
 	{
@@ -79,23 +79,23 @@ void startGame(const Args&... args)
 	}
 	else
 	{
-		json::utility::objectSmartPointer<json::utility::jsonObject> blue = json::utility::make_object<json::utility::jsonObject>();
-		json::utility::objectSmartPointer<json::utility::jsonObject> orange = json::utility::make_object<json::utility::jsonObject>();
-		vector<json::utility::objectSmartPointer<json::utility::jsonObject>> color;
+		json::utility::jsonObject blue;
+		json::utility::jsonObject orange;
+		vector<json::utility::jsonObject> color;
 
 		json::utility::appendArray(0, color);
 		json::utility::appendArray(0, color);
 		json::utility::appendArray(255, color);
 
-		blue->data.push_back({ "name"s, toUTF8JSON("Синий", 1251) });
-		blue->data.push_back({ "color"s, move(color) });
+		blue.data.push_back({ "name"s, toUTF8JSON("Синий", 1251) });
+		blue.data.push_back({ "color"s, move(color) });
 
 		json::utility::appendArray(255, color);
 		json::utility::appendArray(165, color);
 		json::utility::appendArray(0, color);
 
-		orange->data.push_back({ "name"s, toUTF8JSON("Оранжевый", 1251) });
-		orange->data.push_back({ "color"s, move(color) });
+		orange.data.push_back({ "name"s, toUTF8JSON("Оранжевый", 1251) });
+		orange.data.push_back({ "color"s, move(color) });
 
 		json::utility::appendArray(move(blue), players);
 		json::utility::appendArray(move(orange), players);
@@ -117,23 +117,23 @@ bool initialization()
 	if (isInitialized)
 	{
 		const auto& field = settings.getObject("field");
-		const string& type = field->getString("type");
+		const string& type = field.getString("type");
 
 		if (type == "rectangle")
 		{
-			startGame<RectangleField>(field->getInt("width"), field->getInt("height"));
+			startGame<RectangleField>(field.getInt("width"), field.getInt("height"));
 		}
 		else if (type == "square")
 		{
-			startGame<SquareField>(field->getInt("size"));
+			startGame<SquareField>(field.getInt("size"));
 		}
 		else if (type == "circle")
 		{
-			startGame<CircleField>(field->getInt("radius"));
+			startGame<CircleField>(field.getInt("radius"));
 		}
 		else if (type == "quadrant")
 		{
-			startGame<QuadrantField>(field->getInt("radius"));
+			startGame<QuadrantField>(field.getInt("radius"));
 		}
 		else
 		{
