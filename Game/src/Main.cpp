@@ -1,7 +1,6 @@
 #include <iostream>
 #include <filesystem>
 #include <fstream>
-#include <chrono>
 
 #include <Windows.h>
 
@@ -41,8 +40,6 @@ int main(int argc, char** argv)
 
 	SetConsoleOutputCP(CP_UTF8);
 
-	auto start = chrono::high_resolution_clock::now();
-
 	try
 	{
 		if (!initialization())
@@ -56,8 +53,6 @@ int main(int argc, char** argv)
 	{
 		cout << e.what() << endl;
 	}
-
-	cout << static_cast<double>((chrono::high_resolution_clock::now() - start).count()) / 1'000'000'000;
 
 #ifndef _DEBUG
 	system("pause");
