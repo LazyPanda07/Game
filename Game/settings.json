@@ -1,9 +1,14 @@
 {
   "field": {
-    "type": "circle",
-    "radius": 10
+    "type": "rectangle",
+    "width": 9,
+    "height": 3
   },
   "out": "standard",
+  "startPosition": {
+    "x": 0,
+    "y": 0
+  },
   "players": [
     {
       "name": "Синий",

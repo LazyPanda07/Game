@@ -9,6 +9,9 @@ namespace fields
 {
 	class BaseField
 	{
+	public:
+		static const std::pair<size_t, size_t> notInitializedPosition;
+
 	protected:
 		std::vector<std::vector<int>> field;
 		std::unordered_map<const int*, std::vector<int64_t>> colors;
@@ -33,7 +36,7 @@ namespace fields
 
 		void fillPosition(size_t x, size_t y, size_t turnNumber, const std::vector<int64_t>& color);
 
-		std::pair<size_t, size_t> setPlayerPosition();
+		std::pair<size_t, size_t> setPlayerPosition(const std::pair<size_t, size_t>& startPosition);
 
 		std::pair<size_t, size_t> getNextTurnAfterSkip(size_t playerX, size_t playerY) const;
 

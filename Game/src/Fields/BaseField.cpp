@@ -19,6 +19,8 @@ static size_t getDigits(int value);
 
 namespace fields
 {
+	const pair<size_t, size_t> BaseField::notInitializedPosition = { -1, -1 };
+
 	bool BaseField::checkPosition(size_t x, size_t y) const
 	{
 		if (y < field.size())
@@ -120,8 +122,18 @@ namespace fields
 		colors[&field[y][x]] = color;
 	}
 
-	pair<size_t, size_t> BaseField::setPlayerPosition()
+	pair<size_t, size_t> BaseField::setPlayerPosition(const pair<size_t, size_t>& startPosition)
 	{
+		if (startPosition != notInitializedPosition)
+		{
+			if (this->checkPosition(startPosition.first, startPosition.second))
+			{
+				field[startPosition.second][startPosition.first] = -2;
+
+				return startPosition;
+			}
+		}
+
 		for (size_t i = 0; i < triesToFindEmptyPosition; i++)
 		{
 			size_t x = random() % width;
@@ -209,7 +221,7 @@ namespace fields
 	{
 		bool isFileStream = static_cast<bool>(dynamic_cast<ofstream*>(&stream));
 
-		for (size_t y = 0; y < field.field.size(); y++)
+		for (int y = static_cast<int>(field.field.size()) - 1; y >= 0; y--)
 		{
 			for (size_t x = 0; x < field.field[y].size(); x++)
 			{
