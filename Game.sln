@@ -8,43 +8,13 @@ EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
-		Debug|x86 = Debug|x86
-		DebugDLL|x64 = DebugDLL|x64
-		DebugDLL|x86 = DebugDLL|x86
-		ProductionRelease|x64 = ProductionRelease|x64
-		ProductionRelease|x86 = ProductionRelease|x86
-		ProductionReleaseDLL|x64 = ProductionReleaseDLL|x64
-		ProductionReleaseDLL|x86 = ProductionReleaseDLL|x86
 		Release|x64 = Release|x64
-		Release|x86 = Release|x86
-		ReleaseDLL|x64 = ReleaseDLL|x64
-		ReleaseDLL|x86 = ReleaseDLL|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{0DD72F79-9D2A-4393-84FC-98D53AD780F4}.Debug|x64.ActiveCfg = Debug|x64
 		{0DD72F79-9D2A-4393-84FC-98D53AD780F4}.Debug|x64.Build.0 = Debug|x64
-		{0DD72F79-9D2A-4393-84FC-98D53AD780F4}.Debug|x86.ActiveCfg = Debug|x64
-		{0DD72F79-9D2A-4393-84FC-98D53AD780F4}.Debug|x86.Build.0 = Debug|x64
-		{0DD72F79-9D2A-4393-84FC-98D53AD780F4}.DebugDLL|x64.ActiveCfg = Debug|x64
-		{0DD72F79-9D2A-4393-84FC-98D53AD780F4}.DebugDLL|x64.Build.0 = Debug|x64
-		{0DD72F79-9D2A-4393-84FC-98D53AD780F4}.DebugDLL|x86.ActiveCfg = Release|x64
-		{0DD72F79-9D2A-4393-84FC-98D53AD780F4}.DebugDLL|x86.Build.0 = Release|x64
-		{0DD72F79-9D2A-4393-84FC-98D53AD780F4}.ProductionRelease|x64.ActiveCfg = Release|x64
-		{0DD72F79-9D2A-4393-84FC-98D53AD780F4}.ProductionRelease|x64.Build.0 = Release|x64
-		{0DD72F79-9D2A-4393-84FC-98D53AD780F4}.ProductionRelease|x86.ActiveCfg = Release|x64
-		{0DD72F79-9D2A-4393-84FC-98D53AD780F4}.ProductionRelease|x86.Build.0 = Release|x64
-		{0DD72F79-9D2A-4393-84FC-98D53AD780F4}.ProductionReleaseDLL|x64.ActiveCfg = Release|x64
-		{0DD72F79-9D2A-4393-84FC-98D53AD780F4}.ProductionReleaseDLL|x64.Build.0 = Release|x64
-		{0DD72F79-9D2A-4393-84FC-98D53AD780F4}.ProductionReleaseDLL|x86.ActiveCfg = Release|x64
-		{0DD72F79-9D2A-4393-84FC-98D53AD780F4}.ProductionReleaseDLL|x86.Build.0 = Release|x64
 		{0DD72F79-9D2A-4393-84FC-98D53AD780F4}.Release|x64.ActiveCfg = Release|x64
 		{0DD72F79-9D2A-4393-84FC-98D53AD780F4}.Release|x64.Build.0 = Release|x64
-		{0DD72F79-9D2A-4393-84FC-98D53AD780F4}.Release|x86.ActiveCfg = Release|x64
-		{0DD72F79-9D2A-4393-84FC-98D53AD780F4}.Release|x86.Build.0 = Release|x64
-		{0DD72F79-9D2A-4393-84FC-98D53AD780F4}.ReleaseDLL|x64.ActiveCfg = Release|x64
-		{0DD72F79-9D2A-4393-84FC-98D53AD780F4}.ReleaseDLL|x64.Build.0 = Release|x64
-		{0DD72F79-9D2A-4393-84FC-98D53AD780F4}.ReleaseDLL|x86.ActiveCfg = Release|x64
-		{0DD72F79-9D2A-4393-84FC-98D53AD780F4}.ReleaseDLL|x86.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
