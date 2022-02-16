@@ -60,7 +60,7 @@ namespace player
 		possiblePath = field.calculatePossiblePath(currentX, currentY, pathSize + 1);
 	}
 
-	void Player::makeTurn()
+	void Player::makeTurn(const Player& opponent)
 	{
 		auto moveToNext = [this](pair<size_t, size_t>&& nextPosition)
 		{
@@ -98,7 +98,7 @@ namespace player
 		{
 			this->calculatePossiblePath();
 
-			this->makeTurn();
+			this->makeTurn(opponent);
 		}
 		else
 		{
@@ -148,5 +148,10 @@ namespace player
 	const vector<int64_t>& Player::getColor() const
 	{
 		return color;
+	}
+
+	const vector<pair<size_t, size_t>>& Player::getPossiblePath() const
+	{
+		return possiblePath;
 	}
 }

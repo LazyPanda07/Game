@@ -29,7 +29,7 @@ namespace player
 
 		void calculatePossiblePath();
 
-		void makeTurn();
+		void makeTurn(const Player& opponent);
 
 		void printPath(std::ostream& stream) const;
 
@@ -44,6 +44,8 @@ namespace player
 		size_t getCurrentY() const;
 
 		const std::vector<int64_t>& getColor() const;
+
+		const std::vector<std::pair<size_t, size_t>>& getPossiblePath() const;
 
 		~Player() = default;
 	};

@@ -53,6 +53,19 @@ namespace game_mode
 				return cout;
 			}
 		}();
+		auto getOpponent = [this](const player::Player& player)
+		{
+			auto it = ranges::find(players, player);
+
+			if (it + 1 == players.end())
+			{
+				return players.begin();
+			}
+			else
+			{
+				return it + 1;
+			}
+		};
 
 		for (auto& player : players)
 		{
@@ -63,7 +76,7 @@ namespace game_mode
 		{
 			for (auto& player : players)
 			{
-				player.makeTurn();
+				player.makeTurn(*getOpponent(player));
 
 				if (player.isWin())
 				{
