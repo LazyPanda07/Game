@@ -69,7 +69,7 @@ namespace game_mode
 
 		for (auto& player : players)
 		{
-			player.calculatePossiblePath();
+			player.calculatePossiblePath(*getOpponent(player));
 		}
 
 		while (true)

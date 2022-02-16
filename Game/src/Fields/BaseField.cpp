@@ -34,7 +34,7 @@ namespace fields
 		return false;
 	}
 
-	void BaseField::findPath(const pair<size_t, size_t>& startPosition, map<size_t, vector<pair<size_t, size_t>>>& paths, size_t pathSize)
+	void BaseField::findPath(const pair<size_t, size_t>& startPosition, map<size_t, vector<pair<size_t, size_t>>>& paths, size_t pathSize, const vector<pair<size_t, size_t>>& opponentPossiblePath)
 	{
 		stack<vector<pair<size_t, size_t>>> availablePaths;
 		auto appendPath = [this, &availablePaths, &paths](const vector<pair<size_t, size_t>>& currentPath, size_t x, size_t y)
@@ -95,11 +95,11 @@ namespace fields
 		field = const_cast<const BaseField*>(this)->generateField();
 	}
 
-	vector<pair<size_t, size_t>> BaseField::calculatePossiblePath(size_t currentX, size_t currentY, size_t pathSize)
+	vector<pair<size_t, size_t>> BaseField::calculatePossiblePath(size_t currentX, size_t currentY, size_t pathSize, const vector<pair<size_t, size_t>>& opponentPossiblePath)
 	{
 		map<size_t, vector<pair<size_t, size_t>>> paths;
 
-		this->findPath(make_pair(currentX, currentY), paths, pathSize);
+		this->findPath(make_pair(currentX, currentY), paths, pathSize, opponentPossiblePath);
 
 		if (paths.empty())
 		{

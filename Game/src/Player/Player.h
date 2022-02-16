@@ -27,7 +27,7 @@ namespace player
 
 		Player& operator = (const Player& other);
 
-		void calculatePossiblePath();
+		void calculatePossiblePath(const Player& opponent);
 
 		void makeTurn(const Player& opponent);
 

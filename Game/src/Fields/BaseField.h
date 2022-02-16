@@ -25,14 +25,14 @@ namespace fields
 	private:
 		bool checkPosition(size_t x, size_t y) const;
 		
-		void findPath(const std::pair<size_t, size_t>& startPosition, std::map<size_t, std::vector<std::pair<size_t, size_t>>>& paths, size_t pathSize);
+		void findPath(const std::pair<size_t, size_t>& startPosition, std::map<size_t, std::vector<std::pair<size_t, size_t>>>& paths, size_t pathSize, const std::vector<std::pair<size_t, size_t>>& opponentPossiblePath);
 
 	public:
 		BaseField(size_t width, size_t height);
 
 		virtual void generate() final;
 
-		std::vector<std::pair<size_t, size_t>> calculatePossiblePath(size_t currentX, size_t currentY, size_t pathSize);
+		std::vector<std::pair<size_t, size_t>> calculatePossiblePath(size_t currentX, size_t currentY, size_t pathSize, const std::vector<std::pair<size_t, size_t>>& opponentPossiblePath);
 
 		void fillPosition(size_t x, size_t y, size_t turnNumber, const std::vector<int64_t>& color);
 

@@ -4,6 +4,7 @@
 
 #include "JSONUtility.h"
 #include "settings.h"
+#include "Utility.h"
 
 using namespace std;
 
@@ -53,11 +54,11 @@ namespace player
 		return *this;
 	}
 
-	void Player::calculatePossiblePath()
+	void Player::calculatePossiblePath(const Player& opponent)
 	{
 		size_t pathSize = allFieldPositionCount / 2 - path.size();
 
-		possiblePath = field.calculatePossiblePath(currentX, currentY, pathSize + 1);
+		possiblePath = field.calculatePossiblePath(currentX, currentY, pathSize + 1, opponent.getPossiblePath());
 	}
 
 	void Player::makeTurn(const Player& opponent)
@@ -80,7 +81,7 @@ namespace player
 
 			moveToNext(move(nextPositon));
 
-			this->calculatePossiblePath();
+			this->calculatePossiblePath(opponent);
 
 			return;
 		}
@@ -92,11 +93,16 @@ namespace player
 			return;
 		}
 
+		if (isOpponentPathAround({ currentX, currentY }, opponent.getPossiblePath()))
+		{
+			this->calculatePossiblePath(opponent);
+		}
+
 		pair<size_t, size_t>& nextPosition = possiblePath.front();
 
 		if (field[nextPosition.second][nextPosition.first] > 0)
 		{
-			this->calculatePossiblePath();
+			this->calculatePossiblePath(opponent);
 
 			this->makeTurn(opponent);
 		}
