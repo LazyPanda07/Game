@@ -1,8 +1,7 @@
 {
   "field": {
-    "type": "rectangle",
-    "width": 9,
-    "height": 3
+    "type": "square",
+    "size": 6
   },
   "out": "standard",
   "startPosition": {

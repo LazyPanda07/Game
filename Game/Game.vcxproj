@@ -112,6 +112,7 @@ xcopy $(ProjectDir)settings.json $(OutDir) /Y
     <ClCompile Include="src\GameMode\GameMode.cpp" />
     <ClCompile Include="src\Main.cpp" />
     <ClCompile Include="src\Player\Player.cpp" />
+    <ClCompile Include="src\Utility.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Fields\BaseField.h" />

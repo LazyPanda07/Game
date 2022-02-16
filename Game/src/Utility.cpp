@@ -4,8 +4,10 @@
 
 using namespace std;
 
-bool isOpponentPathAround(const pair<size_t, size_t>& playerPosition, const vector<pair<size_t, size_t>>& opponentPossiblePath)
+tuple<bool, const pair<size_t, size_t>*> isOpponentPathAround(const pair<size_t, size_t>& playerPosition, const vector<pair<size_t, size_t>>& opponentPossiblePath)
 {
+	const pair<size_t, size_t>* result = nullptr;
+
 	auto left = [](const pair<size_t, size_t>& position) -> pair<size_t, size_t>
 	{
 		return { position.first - 1, position.second };
@@ -20,14 +22,21 @@ bool isOpponentPathAround(const pair<size_t, size_t>& playerPosition, const vect
 	};
 	auto bottom = [](const pair<size_t, size_t>& position) -> pair<size_t, size_t>
 	{
-		return { position.first, position.second -1 };
+		return { position.first, position.second - 1 };
 	};
 
-	return ranges::any_of(opponentPossiblePath, [&](const pair<size_t, size_t>& position)
+	for (const auto& position : opponentPossiblePath)
+	{
+		if (playerPosition == left(position) ||
+			playerPosition == top(position) ||
+			playerPosition == right(position) ||
+			playerPosition == bottom(position))
 		{
-			return playerPosition == left(position) ||
-				playerPosition == top(position) ||
-				playerPosition == right(position) ||
-				playerPosition == bottom(position);
-		});
+			result = &position;
+
+			break;
+		}
+	}
+
+	return { static_cast<bool>(result), result };
 }

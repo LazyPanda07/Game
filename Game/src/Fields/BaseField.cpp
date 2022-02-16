@@ -37,6 +37,7 @@ namespace fields
 	void BaseField::findPath(const pair<size_t, size_t>& startPosition, map<size_t, vector<pair<size_t, size_t>>>& paths, size_t pathSize, const vector<pair<size_t, size_t>>& opponentPossiblePath)
 	{
 		stack<vector<pair<size_t, size_t>>> availablePaths;
+		auto&& [checkOpponentPath, opponentPossiblePathPosition] = isOpponentPathAround(startPosition, opponentPossiblePath);
 		auto appendPath = [this, &availablePaths, &paths](const vector<pair<size_t, size_t>>& currentPath, size_t x, size_t y)
 		{
 			pair<size_t, size_t> position = make_pair(x, y);
@@ -54,6 +55,82 @@ namespace fields
 		};
 
 		availablePaths.push({ startPosition });
+
+		if (checkOpponentPath)
+		{
+			vector<pair<size_t, size_t>> currentPath = move(availablePaths.top());
+			const auto& [x, y] = currentPath.back();
+
+			availablePaths.pop();
+
+			if (currentPath.size() - 1 == pathSize)
+			{
+				return;
+			}
+
+			if (*opponentPossiblePathPosition == make_pair(x + 1, y))
+			{
+				appendPath(currentPath, x, y + 1);
+
+				if (x)
+				{
+					appendPath(currentPath, x - 1, y);
+				}
+
+				if (y)
+				{
+					appendPath(currentPath, x, y - 1);
+				}
+
+				appendPath(currentPath, x + 1, y);
+			}
+			else if (*opponentPossiblePathPosition == make_pair(x, y + 1))
+			{
+				appendPath(currentPath, x + 1, y);
+
+				if (x)
+				{
+					appendPath(currentPath, x - 1, y);
+				}
+
+				if (y)
+				{
+					appendPath(currentPath, x, y - 1);
+				}
+
+				appendPath(currentPath, x, y + 1);
+			}
+			else if (*opponentPossiblePathPosition == make_pair(x - 1, y))
+			{
+				appendPath(currentPath, x + 1, y);
+				appendPath(currentPath, x, y + 1);
+
+				if (y)
+				{
+					appendPath(currentPath, x, y - 1);
+				}
+
+				if (x)
+				{
+					appendPath(currentPath, x - 1, y);
+				}
+			}
+			else if (*opponentPossiblePathPosition == make_pair(x, y - 1))
+			{
+				appendPath(currentPath, x + 1, y);
+				appendPath(currentPath, x, y + 1);
+
+				if (x)
+				{
+					appendPath(currentPath, x - 1, y);
+				}
+
+				if (y)
+				{
+					appendPath(currentPath, x, y - 1);
+				}
+			}
+		}
 
 		while (availablePaths.size())
 		{

@@ -93,7 +93,7 @@ namespace player
 			return;
 		}
 
-		if (isOpponentPathAround({ currentX, currentY }, opponent.getPossiblePath()))
+		if (get<bool>(isOpponentPathAround({ currentX, currentY }, opponent.getPossiblePath())))
 		{
 			this->calculatePossiblePath(opponent);
 		}
