@@ -67,7 +67,7 @@ void startGame(const Args&... args)
 
 	FieldT field(args...);
 	vector<json::utility::jsonObject> players;
-	pair<size_t, size_t> startPosition = fields::BaseField::notInitializedPosition;
+	pair<size_t, size_t> playersStartPosition = fields::BaseField::notInitializedPosition;
 
 	if (isInitialized)
 	{
@@ -77,7 +77,7 @@ void startGame(const Args&... args)
 		{
 			const json::utility::jsonObject& object = settings.getObject("startPosition");
 
-			startPosition = { object.getInt("x"), object.getInt("y") };
+			playersStartPosition = { object.getInt("x"), object.getInt("y") };
 		}
 		catch (const json::exceptions::CantFindValueException&)
 		{
@@ -110,7 +110,7 @@ void startGame(const Args&... args)
 
 	field.generate();
 
-	startPosition = field.setPlayerPosition(startPosition);
+	startPosition = field.setPlayerPosition(playersStartPosition);
 
 	game_mode::GameMode game(field, players);
 
