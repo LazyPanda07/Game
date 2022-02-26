@@ -1,6 +1,6 @@
 {
   "field": {
-    "type": "circle",
+    "type": "quadrant",
     "radius": 3
   },
   "out": "standard",

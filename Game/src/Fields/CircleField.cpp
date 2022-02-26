@@ -2,27 +2,22 @@
 
 using namespace std;
 
-namespace fields
+struct point
 {
-	namespace circle_utility
-	{
-		int64_t checkSign(const point& firstPoint, const point& secondPoint, const point& thirdPoint)
-		{
-			return (firstPoint.x - thirdPoint.x) * (secondPoint.y - thirdPoint.y) - (secondPoint.x - thirdPoint.x) * (firstPoint.y - thirdPoint.y);
-		}
+	int64_t x;
+	int64_t y;
+};
 
-		bool isPointInTriangle(const point& checkPoint, const triangle& triangle)
-		{
-			int64_t v1v2Check = checkSign(checkPoint, triangle.v1, triangle.v2);
-			int64_t v2v3Check = checkSign(checkPoint, triangle.v2, triangle.v3);
-			int64_t v3v1Check = checkSign(checkPoint, triangle.v3, triangle.v1);
-			bool hasNeg = (v1v2Check < 0) || (v2v3Check < 0) || (v3v1Check < 0);
-			bool hasPos = (v1v2Check > 0) || (v2v3Check > 0) || (v3v1Check > 0);
+struct triangle
+{
+	point v1;
+	point v2;
+	point v3;
+};
 
-			return !(hasNeg && hasPos);
-		}
-	}
-}
+int64_t checkSign(const point& firstPoint, const point& secondPoint, const point& thirdPoint);
+
+bool isPointInTriangle(const point& checkPoint, const triangle& triangle);
 
 namespace fields
 {
@@ -34,8 +29,6 @@ namespace fields
 
 		auto checkCirclePosition = [this, &centerX, &centerY](int64_t x, int64_t y)
 		{
-			using namespace circle_utility;
-
 			static triangle topLeft = { { centerX, centerY }, { 0, centerY }, { centerX, 0 } };
 			static triangle topRight = { { centerX, centerY }, { static_cast<int64_t>(width) - 1, centerY }, { centerX, 0 } };
 			static triangle bottomLeft = { { centerX, centerY }, { 0, centerY }, { centerX, static_cast<int64_t>(height) - 1 } };
@@ -73,4 +66,20 @@ namespace fields
 	{
 		return radius;
 	}
+}
+
+int64_t checkSign(const point& firstPoint, const point& secondPoint, const point& thirdPoint)
+{
+	return (firstPoint.x - thirdPoint.x) * (secondPoint.y - thirdPoint.y) - (secondPoint.x - thirdPoint.x) * (firstPoint.y - thirdPoint.y);
+}
+
+bool isPointInTriangle(const point& checkPoint, const triangle& triangle)
+{
+	int64_t v1v2Check = checkSign(checkPoint, triangle.v1, triangle.v2);
+	int64_t v2v3Check = checkSign(checkPoint, triangle.v2, triangle.v3);
+	int64_t v3v1Check = checkSign(checkPoint, triangle.v3, triangle.v1);
+	bool hasNeg = (v1v2Check < 0) || (v2v3Check < 0) || (v3v1Check < 0);
+	bool hasPos = (v1v2Check > 0) || (v2v3Check > 0) || (v3v1Check > 0);
+
+	return !(hasNeg && hasPos);
 }
