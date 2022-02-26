@@ -1,7 +1,7 @@
 {
   "field": {
-    "type": "square",
-    "size": 6
+    "type": "circle",
+    "radius": 3
   },
   "out": "standard",
   "startPosition": {
