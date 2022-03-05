@@ -73,6 +73,11 @@ void startGame(const Args&... args)
 	{
 		players = json::utility::JSONArrayWrapper(settings.getArray("players")).getAsObjectArray();
 
+		if (players.size() != 2)
+		{
+			throw runtime_error(toUTF8JSON("В настройках игра поддерживается только для 2 игроков"));
+		}
+
 		try
 		{
 			const json::utility::jsonObject& object = settings.getObject("startPosition");
