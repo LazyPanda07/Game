@@ -20,7 +20,12 @@ namespace player
 		currentX = startPosition.first;
 		currentY = startPosition.second;
 
-		path.push_back(startPosition);
+		if (field[currentY][currentX] == -2)
+		{
+			field.fillPosition(currentX, currentY, turns++, this->getColor());
+
+			path.push_back(startPosition);
+		}
 
 		allFieldPositionCount = field.getAllPositionCount();
 	}
@@ -128,7 +133,7 @@ namespace player
 
 	bool Player::isWin() const
 	{
-		return (path.size() - 1) == allFieldPositionCount / 2;
+		return path.size() == allFieldPositionCount / 2;
 	}
 
 	bool Player::operator == (const Player& other) const

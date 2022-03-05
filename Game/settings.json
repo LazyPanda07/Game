@@ -1,7 +1,7 @@
 {
   "field": {
-    "type": "quadrant",
-    "radius": 3
+    "type": "square",
+    "size": 4
   },
   "out": "standard",
   "startPosition": {

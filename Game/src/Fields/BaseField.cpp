@@ -63,7 +63,7 @@ namespace fields
 
 			availablePaths.pop();
 
-			if (currentPath.size() - 1 == pathSize)
+			if (currentPath.size() == pathSize)
 			{
 				return;
 			}
@@ -139,7 +139,7 @@ namespace fields
 
 			availablePaths.pop();
 
-			if (currentPath.size() - 1 == pathSize)
+			if (currentPath.size() == pathSize)
 			{
 				return;
 			}

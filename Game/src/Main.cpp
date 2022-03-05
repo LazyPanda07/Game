@@ -75,7 +75,7 @@ void startGame(const Args&... args)
 
 		if (players.size() != 2)
 		{
-			throw runtime_error(toUTF8JSON("В настройках игра поддерживается только для 2 игроков"));
+			throw runtime_error(toUTF8JSON("В settings.json указано неправильное количество игроков, игра поддерживается только для 2 игроков", 1251));
 		}
 
 		try
